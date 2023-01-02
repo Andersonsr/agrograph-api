@@ -8,6 +8,6 @@ in the following paper https://publicaciones.sadio.org.ar/index.php/JAIIO/articl
 ## Testcases
 to run all test cases the following command line must be executed 
 ```run tests
-python /mnt/g/PycharmProjects/agroapi/manage.py test agroapi.testCases
+python manage.py test agroapi.testCases
 ```
 
