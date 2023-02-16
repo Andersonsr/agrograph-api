@@ -25,20 +25,22 @@ class Location(StructuredNode):
 
 class Date(StructuredNode):
     uid = UniqueIdProperty()
-    date = DateProperty(required=True, unique_index=True)
+    date = DateTimeFormatProperty(required=True, unique_index=True, format='%d/%m/%Y')
 
 
 class Variable(StructuredNode):
+    categories = {'solo': 1, 'produção vegetal': 2, 'produção animal': 3, 'meteorologia': 4}
     uid = UniqueIdProperty()
     name = StringProperty(required=True)
     unit = StringProperty(required=True)
     value = FloatProperty(required=True)
+    category = StringProperty(required=True, choices=categories)
 
 
 class Measurement(StructuredNode):
-    time = DateTimeFormatProperty(format='%HH:%mm:%ss')
+    time = DateTimeFormatProperty(format='%H:%M:%S')
     uid = UniqueIdProperty()
-    hash = StringProperty(unique_index=True)
+    resume = StringProperty(required=True)
 
     # relations
     where = RelationshipTo('Location', 'where')

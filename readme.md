@@ -6,7 +6,8 @@ in the following paper https://publicaciones.sadio.org.ar/index.php/JAIIO/articl
 
 
 ## Testcases
-to run all test cases the following command line must be executed 
+to run all test cases the following command line must be executed,
+Neo4j database need to be running.
 ```run tests
 python manage.py test agroapi.testCases
 ```

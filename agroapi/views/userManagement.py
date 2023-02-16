@@ -35,9 +35,9 @@ def editUser(request):
         userProfile.save()
 
         request.session['email'] = newEmail
-        return Response({'detail': 'ok'}, status=status.HTTP_200_OK)
+        return Response({'message': 'ok'}, status=status.HTTP_200_OK)
 
-    return Response({'detail': 'you are not logged in'}, status=status.HTTP_403_FORBIDDEN)
+    return Response({'message': 'you are not logged in'}, status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(('POST',))
@@ -49,7 +49,7 @@ def createUser(request):
         name = request.POST['name']
         institution = request.POST['institution']
     except KeyError:
-        return Response({'detail': 'something is wrong with your request'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'something is wrong with your request'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         User.objects.get(username=email)
@@ -57,11 +57,11 @@ def createUser(request):
         try:
             User.objects.create_user(username=email, password=password)
             UserProfile(institution=institution, name=name, email=email).save()
-            return Response({'detail': 'ok'}, status=status.HTTP_200_OK)
+            return Response({'message': 'ok'}, status=status.HTTP_200_OK)
         except IntegrityError:
-            return Response({'detail': 'this email is already registered'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'this email is already registered'}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({'detail': 'this email is already registered'}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'message': 'this email is already registered'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(('GET',))
@@ -71,16 +71,18 @@ def login(request):
         email = request.GET['email']
         password = request.GET['password']
     except KeyError:
-        return Response({'detail': 'something is wrong with your request'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'something is wrong with your request'}, status=status.HTTP_400_BAD_REQUEST)
 
     user = authenticate(username=email, password=password)
+    profile = UserProfile.nodes.get(email=email)
     if user is not None:
         request.session['email'] = email
         request.session['logged'] = 'yes'
-        return Response({'detail': 'user authenticated'}, status=status.HTTP_200_OK)
+        request.session['uid'] = profile.uid
+        return Response({'message': 'user authenticated'}, status=status.HTTP_200_OK)
 
     else:
-        return Response({'detail': 'user not found'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'user not found'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(('POST',))
@@ -89,7 +91,8 @@ def logout(request):
     try:
         del request.session['email']
         del request.session['logged']
+        del request.session['id']
     except KeyError:
         pass
-    return Response({'detail': 'successfully logged off'}, status=status.HTTP_200_OK)
+    return Response({'message': 'successfully logged off'}, status=status.HTTP_200_OK)
 
