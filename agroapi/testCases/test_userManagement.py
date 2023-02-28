@@ -68,7 +68,7 @@ class testUserManagement(TestCase):
             'name': 'anderson',
             'institution': 'unipampa'
         })
-        client.get('/v1/login/', {
+        client.post('/v1/login/', {
             'email': 'anderson@email.com',
             'password': 'strongpassword'
         })
@@ -84,7 +84,7 @@ class testUserManagement(TestCase):
             'name': 'anderson',
             'institution': 'unipampa'
         })
-        client.get('/v1/login/', {
+        client.post('/v1/login/', {
             'email': 'anderson@email.com',
             'password': 'strongpassword'
         })
@@ -105,7 +105,7 @@ class testUserManagement(TestCase):
             'name': 'anderson',
             'institution': 'unipampa'
         })
-        client.get('/v1/login/', {
+        client.post('/v1/login/', {
             'email': 'anderson@email.com',
             'password': 'strongpassword'
         })

@@ -9,6 +9,10 @@ from ..utils.hasher import hashIt
 from django.contrib.auth.models import User
 from agroapi.models import UserProfile, Location, Variable, Measurement, Date
 from django.contrib.auth import authenticate
+from django.http import QueryDict
+
+dateFormat = '%d/%m/%Y'
+timeFormat = '%H:%M:%S'
 
 
 @api_view(('POST', ))
@@ -17,14 +21,12 @@ def insert(request):
     try:
         email = request.session['email']
         uid = request.session['uid']
-        dateFormat = request.POST['date-format']
         logged = request.session['logged'] == 'yes'
     except AttributeError:
         return Response({'message': 'not authorized, login first'}, status=status.HTTP_403_FORBIDDEN)
 
     if logged:
         profile = UserProfile.nodes.get(email=email)
-        nodes = []
         for row in json.loads(request.POST['data']):
             try:
                 latitude = row['latitude']
@@ -39,7 +41,9 @@ def insert(request):
                     time = None
                 category = row['category']
             except AttributeError:
-                return Response({'message': 'something is wrong with your request'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'longitude, latitude. variable name, value, unit, date are required'},
+                                status=status.HTTP_400_BAD_REQUEST)
+
             try:
                 variable = Variable.nodes.get_or_none(name=name, unit=unit, value=value, category=category)
                 if variable is None:
@@ -63,11 +67,11 @@ def insert(request):
                         measurement = Measurement(resume=hashIt(date, time, uid, latitude, longitude)).save()
 
                 else:
-                    measurement = Measurement.nodes.get_or_none(time=datetime.strptime(time, '%H:%M:%S'),
+                    measurement = Measurement.nodes.get_or_none(time=datetime.strptime(time, timeFormat),
                                                                 resume=hashIt(date, time, uid, latitude, longitude))
                     if measurement is None:
                         newNode = True
-                        measurement = Measurement(time=datetime.strptime(time, '%H:%M:%S'),
+                        measurement = Measurement(time=datetime.strptime(time, timeFormat),
                                                   resume=hashIt(date, time, uid, latitude, longitude)).save()
 
                 if newNode:
@@ -86,7 +90,16 @@ def insert(request):
         return Response({'message': 'ok'}, status=status.HTTP_200_OK)
 
 
-@api_view(('POST', ))
+@api_view(('GET', ))
 @renderer_classes((JSONRenderer, TemplateHTMLRenderer))
 def read(request):
+    try:
+        email = request.session['email']
+        uid = request.session['uid']
+        logged = request.session['logged'] == 'yes'
+    except AttributeError:
+        return Response({'message': 'not authorized, login first'}, status=status.HTTP_403_FORBIDDEN)
+
+    if logged:
+        return Response({}, status=status.HTTP_200_OK)
     return

@@ -36,7 +36,7 @@ class testDataManagement(TestCase):
                 "name": "NDVI", "unit": "ndvi", "value": 1.2, "category": "produção vegetal"
             }
         ]
-        response = self.client.post('/v1/insert/', {"data": json.dumps(data), "date-format": '%d/%m/%Y'})
+        response = self.client.post('/v1/insert/', {"data": json.dumps(data)})
         self.assertEquals(response.status_code, 200)
         self.assertNotEquals(Location.nodes.get_or_none(latitude=0.1, longitude=2.1), None)
         self.assertNotEquals(Date.nodes.get_or_none(date=datetime.strptime('10/02/2021', '%d/%m/%Y')), None)

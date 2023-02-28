@@ -14,12 +14,17 @@ def editUser(request):
     try:
         isLogged = 'logged' in request.session
         email = request.session['email']
+    except KeyError:
+        return Response({'message': 'you are not logged in'}, status=status.HTTP_403_FORBIDDEN)
+
+    try:
         newName = request.POST['name']
         newEmail = request.POST['email']
         newPass = request.POST['password']
         newInst = request.POST['institution']
     except KeyError:
-        return Response({'detail': 'you are not logged in'}, status=status.HTTP_403_FORBIDDEN)
+        return Response({'message': 'name, email, password, institution are required'},
+                        status=status.HTTP_400_BAD_REQUEST)
 
     if isLogged:
         userProfile = UserProfile.nodes.get(email=email)
@@ -49,7 +54,7 @@ def createUser(request):
         name = request.POST['name']
         institution = request.POST['institution']
     except KeyError:
-        return Response({'message': 'something is wrong with your request'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'email, password, name, institution are required'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         User.objects.get(username=email)
@@ -61,15 +66,15 @@ def createUser(request):
         except IntegrityError:
             return Response({'message': 'this email is already registered'}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({'message': 'this email is already registered'}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'message': 'this email is already registered'}, status=status.HTTP_403_FORBIDDEN)
 
 
-@api_view(('GET',))
+@api_view(('POST',))
 @renderer_classes((JSONRenderer, TemplateHTMLRenderer))
 def login(request):
     try:
-        email = request.GET['email']
-        password = request.GET['password']
+        email = request.POST['email']
+        password = request.POST['password']
     except KeyError:
         return Response({'message': 'something is wrong with your request'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -82,7 +87,7 @@ def login(request):
         return Response({'message': 'user authenticated'}, status=status.HTTP_200_OK)
 
     else:
-        return Response({'message': 'user not found'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'user not found'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(('POST',))
