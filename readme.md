@@ -10,27 +10,26 @@ in the following paper https://publicaciones.sadio.org.ar/index.php/JAIIO/articl
 * ### POST sing-in/ 
 
   The expected request for this endpoint is displayed bellow. 
-  All fields are required to create a new user.
-```
-  "email": "youremail@anything.com",
-  "password": "supersecurepassword",
-  "name": "John Doe",
-  "institution": "uni"  
-```
+All fields are required to create a new user.
+  ```
+    "email": "youremail@anything.com",
+    "password": "supersecurepassword",
+    "name": "John Doe",
+    "institution": "uni"  
+  ```
 
 * ### POST login/
 
     This endpoint expects to receive a request body like this.
-    A new session will be initiated and a code 200 response will 
-  be returned if user exist and password is right.
-
+A new session will be initiated and a code 200 response will 
+be returned if user exist and password is right.
     
-```
-{
-    'email': 'youremail@anything.com',
-    'password': 'supersecurepassword'
-}
-```
+  ```
+  {
+      "email": "youremail@anything.com",
+      "password": "supersecurepassword"
+  }
+  ```
 
 * ### POST logout/
 
@@ -38,19 +37,19 @@ in the following paper https://publicaciones.sadio.org.ar/index.php/JAIIO/articl
 
 * ### POST edit-profile/ 
 
-In order to edit its own profile a user must log in first, then a
+  In order to edit its own profile a user must log in first, then a
 request like the following one must be sent to this end point. 
 email, password, name, institution are required properties and 
 must have a value even if not updated. 
 
-```
-{
-    "email": "youreNEWmail@anything.com",
-    "password": "supersecureNEWpassword",
-    "name": "John Doe",
-    "institution": "uni"
-}
-```
+  ```
+  {
+      "email": "youreNEWmail@anything.com",
+      "password": "supersecureNEWpassword",
+      "name": "John Doe",
+      "institution": "uni"
+  }
+  ```
 
 * ### POST insert/
   This endpoint is used to create new nodes, to do so the request 
@@ -93,7 +92,24 @@ the '%d/%m/%Y' format, time must be in the format '%H:%M:%S'.
   }
   ```
 * ### GET read/
-  under development
+  
+  ```
+  {
+      "date-min": "10/01/2023",
+      "date-max": "01/01/2023",
+      "time-min": "12:00:00",
+      "time-max": "07:00:00",
+      "name": "potassium",
+      "min-value": 2.0,
+      "max-value" 2.3,
+      "polygon": [
+          {"longitude": 1.0, "latitude": 2.0}, 
+          {"longitude": 2.0, "latitude": 2.0},
+          {"longitude": 1.0, "latitude": 1.0},
+          {"longitude": 2.0, "latitude": 1.0}
+       ]
+  }
+  ```
 
 
 ## Reminder

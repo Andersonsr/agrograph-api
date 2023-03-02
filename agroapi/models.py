@@ -16,6 +16,9 @@ class UserProfile(StructuredNode):
     name = StringProperty(required=True)
     email = EmailProperty(required=True, unique_index=True)
 
+    # vertices
+    measurements = RelationshipTo('Measurement', 'measurements')
+
 
 class Location(StructuredNode):
     uid = UniqueIdProperty()
@@ -42,9 +45,8 @@ class Measurement(StructuredNode):
     uid = UniqueIdProperty()
     resume = StringProperty(required=True)
 
-    # relations
+    # vertices
     where = RelationshipTo('Location', 'where')
-    who = RelationshipTo('UserProfile', 'who')
     what = RelationshipTo('Variable', 'what')
     when = RelationshipTo('Date', 'when')
 

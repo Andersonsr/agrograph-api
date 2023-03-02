@@ -12,7 +12,7 @@ from neomodel import db, clear_neo4j_database
 
 class testDataManagement(TestCase):
     def testInsert(self):
-        """check if nodes and relationships are created when /v1/insert/ is used"""
+        """check if nodes and relationships are created when /v1/insert/ is requested"""
         session = self.client.session
         session['email'] = 'anderson@email.com'
         session['logged'] = 'yes'

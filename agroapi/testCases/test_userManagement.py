@@ -11,7 +11,7 @@ class testUserManagement(TestCase):
         clear_neo4j_database(db)
 
     def testCreateUser(self):
-        """check if user object is created when /v1/sing-in/ is used"""
+        """check if user object is created when /v1/sing-in/ is requested"""
         client = Client()
         client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
@@ -30,7 +30,7 @@ class testUserManagement(TestCase):
         self.assertEquals(profile.name, 'anderson')
 
     def testEmailValidation(self):
-        """test if a invalid email can be used to create a new user"""
+        """test if an invalid email can be used to create a new user"""
         def call():
             client = Client()
             client.post('/v1/sing-in/', {
@@ -60,7 +60,7 @@ class testUserManagement(TestCase):
         self.assertTrue(status.is_client_error(response.status_code))
 
     def testSession(self):
-        """check if session variable is created when /v1/login/ is used"""
+        """check if session variable is created when /v1/login/ is requested"""
         client = Client()
         client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
@@ -76,7 +76,7 @@ class testUserManagement(TestCase):
         self.assertIn('logged', client.session)
 
     def testLogout(self):
-        """check if session variable is removed when /v1/logout/ is used"""
+        """check if session variable is removed when /v1/logout/ is requested"""
         client = Client()
         client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
@@ -92,7 +92,7 @@ class testUserManagement(TestCase):
         self.assertNotIn('email', client.session)
 
     def testEditUser(self):
-        """check if fields are changed when /v1/edit-profile/ is used"""
+        """check if fields are changed when /v1/edit-profile/ is requested"""
         newMail = 'anderson02@email.com'
         newName = 'anderson02'
         newPassword = '654321'

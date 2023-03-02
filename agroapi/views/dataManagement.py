@@ -6,13 +6,9 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.db import IntegrityError
 from ..utils.hasher import hashIt
-from django.contrib.auth.models import User
 from agroapi.models import UserProfile, Location, Variable, Measurement, Date
-from django.contrib.auth import authenticate
-from django.http import QueryDict
-
-dateFormat = '%d/%m/%Y'
-timeFormat = '%H:%M:%S'
+from ..utils.constants import dateFormat, timeFormat
+from ..utils.filters import filterByLocation, filterByDate
 
 
 @api_view(('POST', ))
@@ -22,7 +18,7 @@ def insert(request):
         email = request.session['email']
         uid = request.session['uid']
         logged = request.session['logged'] == 'yes'
-    except AttributeError:
+    except KeyError:
         return Response({'message': 'not authorized, login first'}, status=status.HTTP_403_FORBIDDEN)
 
     if logged:
@@ -75,7 +71,7 @@ def insert(request):
                                                   resume=hashIt(date, time, uid, latitude, longitude)).save()
 
                 if newNode:
-                    measurement.who.connect(profile)
+                    profile.measurements.connect(measurement)
                     measurement.where.connect(location)
                     measurement.when.connect(dateObj)
                     measurement.what.connect(variable)
@@ -101,5 +97,14 @@ def read(request):
         return Response({'message': 'not authorized, login first'}, status=status.HTTP_403_FORBIDDEN)
 
     if logged:
+        dateMin = request.GET.get("date-min")
+        dateMax = request.GET.get("date-max")
+        polygon = request.GET.get("polygon")
+        user = UserProfile.nodes.get_or_none(uid=uid)
+        measurements = user.measurements.all()
+
+        measurements = filterByDate(measurements, dateMin, dateMax)
+        measurements = filterByLocation(measurements, polygon)
+
         return Response({}, status=status.HTTP_200_OK)
     return
