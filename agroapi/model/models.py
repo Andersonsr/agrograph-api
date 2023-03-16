@@ -46,7 +46,7 @@ class Measurement(StructuredNode):
     resume = StringProperty(required=True)
 
     # vertices
-    where = RelationshipTo('Location', 'where')
-    what = RelationshipTo('Variable', 'what')
-    when = RelationshipTo('Date', 'when')
+    location = RelationshipTo('Location', 'where')
+    variables = RelationshipTo('Variable', 'what')
+    date = RelationshipTo('Date', 'when')
 
