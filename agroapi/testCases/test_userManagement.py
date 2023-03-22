@@ -2,13 +2,14 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from django.test import Client
 from django.test import TestCase
-from ..models import UserProfile
+from agroapi.model.models import UserProfile
 from neomodel import db, clear_neo4j_database
 
 
 class testUserManagement(TestCase):
     def setUp(self):
         clear_neo4j_database(db)
+        client = Client()
 
     def testCreateUser(self):
         """check if user object is created when /v1/sing-in/ is requested"""

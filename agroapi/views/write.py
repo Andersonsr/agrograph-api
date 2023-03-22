@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.db import IntegrityError
 from ..model.writer import writeMeasurement
-from ..model.reader import readMeasurements, readUserMeasurements
+from ..model.reader import readMeasurementsQuery, readUserMeasurements
 from ..utils.filters import applyALlFilters
 
 

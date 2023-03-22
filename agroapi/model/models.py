@@ -43,7 +43,7 @@ class Variable(StructuredNode):
 class Measurement(StructuredNode):
     time = DateTimeFormatProperty(format='%H:%M:%S')
     uid = UniqueIdProperty()
-    resume = StringProperty(required=True)
+    hash = StringProperty(required=True)
 
     # vertices
     location = RelationshipTo('Location', 'where')

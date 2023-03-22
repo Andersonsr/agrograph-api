@@ -100,8 +100,8 @@ the '%d/%m/%Y' format, time must be in the format '%H:%M:%S'.
       "time-min": "12:00:00",
       "time-max": "07:00:00",
       "name": "potassium",
-      "min-value": 2.0,
-      "max-value" 2.3,
+      "value-min": 2.0,
+      "value-max" 2.3,
       "polygon": [
           {"longitude": 1.0, "latitude": 2.0}, 
           {"longitude": 2.0, "latitude": 2.0},
