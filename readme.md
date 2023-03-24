@@ -92,14 +92,18 @@ the '%d/%m/%Y' format, time must be in the format '%H:%M:%S'.
   }
   ```
 * ### GET read/
-  
+  This endpoint receive a request as bellow, but every key is 
+optional, if an empty request is sent to this endpoint it will 
+return every measurement owned by the user.
+  The polygon must be formed by at least 3 points.
+  The name value can contain multiple variables in one string.  
   ```
   {
       "date-min": "10/01/2023",
       "date-max": "01/01/2023",
       "time-min": "12:00:00",
       "time-max": "07:00:00",
-      "name": "potassium",
+      "name": "potassium phosphorus",
       "value-min": 2.0,
       "value-max" 2.3,
       "category" "solo",
@@ -111,7 +115,7 @@ the '%d/%m/%Y' format, time must be in the format '%H:%M:%S'.
        ]
   }
   ```
-
+The result is a json array containing multiple objects. 
 
 ## Reminder
 to run all test cases the following command line must be executed,
