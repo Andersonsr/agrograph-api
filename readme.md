@@ -53,7 +53,7 @@ must have a value even if not updated.
 
 * ### POST insert/
   This endpoint is used to create new nodes, to do so the request 
-sent to this endpoint must have a array of measurements 
+sent to this endpoint must have an array of measurements 
 identified by the key "data".
 
   Each measurement has these required properties, longitude (float), 
@@ -115,7 +115,9 @@ return every measurement owned by the user.
        ]
   }
   ```
-The result is a json array containing multiple objects. 
+  
+The result is a json array containing multiple objects similar 
+to the objects described in [POST insert/](#POST insert/). 
 
 ## Reminder
 to run all test cases the following command line must be executed,
