@@ -57,35 +57,28 @@ def filterByDate(measurements=None, dateMin=None, dateMax=None, timeMin=None, ti
 
 
 def applyALlFilters(email=None, uid=None, polygon=None, dateMin=None, dateMax=None, valueMin=None, valueMax=None,
-                    timeMin=None, timeMax=None, varNames=None):
+                    timeMin=None, timeMax=None, varNames=None, category=None):
     data = []
     measurements = readUserMeasurements(email, uid)
-    # if polygon is not None:
-    #     measurements = filterByLocation(measurements, json.loads(polygon))
-    #
-    # measurements = filterByDate(measurements, dateMin, dateMax, timeMin, timeMax)
+    if polygon is not None:
+        measurements = filterByLocation(measurements, json.loads(polygon))
+
+    measurements = filterByDate(measurements, dateMin, dateMax, timeMin, timeMax)
 
     for measurement in measurements:
-
         variables = measurement.variables.all()
-        varArray = []
+        info = {
+            "longitude": measurement.location.all()[0].longitude,
+            "latitude": measurement.location.all()[0].latitude,
+            "date": measurement.date.all()[0].date.strftime(dateFormat)
+        }
+
         for variable in variables:
-            if (varNames is None or variable.name in varNames) and checkValue(variable, valueMin, valueMax):
-                varData = {
-                    "variable": variable.name,
-                    "value": variable.value,
-                    "unit": variable.unit
-                }
-                varArray.append(varData)
-
-        if len(varArray) > 0:
-            info = {
-                "longitude": measurement.location.all()[0].longitude,
-                "latitude": measurement.location.all()[0].latitude,
-                "date": measurement.date.all()[0].date.strftime(dateFormat),
-                "variables": varArray
-            }
-            data.append(info)
-
-    return json.dumps(data)
+            if (varNames is None or variable.name in varNames) and checkValue(variable.value, valueMin, valueMax):
+                if category is None or variable.category == category:
+                    info['variable'] = variable.name
+                    info['value'] = variable.value
+                    info['unit'] = variable.unit
+                    data.append(info)
+    return data
 

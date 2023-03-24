@@ -1,5 +1,4 @@
 import json
-
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes
@@ -27,10 +26,14 @@ def read(request):
         timeMin = request.GET.get("time-min")
         timeMax = request.GET.get("time-max")
         varName = request.GET.get("name")
+        category = request.GET.get("category")
 
         try:
-            data = applyALlFilters(email, uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin, timeMax, varName)
+            data = applyALlFilters(email, uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin, timeMax, varName,
+                                   category)
         except KeyError:
             return Response({'message': 'User has no measurements'}, status.HTTP_404_NOT_FOUND)
-        return Response(data, status=status.HTTP_200_OK)
+        except ValueError:
+            return Response({'message': 'value-max and value-min must be float'}, status.HTTP_400_BAD_REQUEST)
+        return Response(json.dumps(data), status=status.HTTP_200_OK)
     return

@@ -16,13 +16,13 @@ def checkTime(timeMin=None, timeMax=None, time=None):
     return True
 
 
-def checkValue(variable=None, valueMin=None, valueMax=None):
+def checkValue(value=None, valueMin=None, valueMax=None):
     if valueMin is None and valueMax is None:
         return True
     if valueMin is not None and valueMax is not None:
-        return valueMin <= variable.value <= valueMax
+        return float(valueMin) <= value <= float(valueMax)
     if valueMin is not None:
-        return variable.value >= valueMin
+        return value >= float(valueMin)
     if valueMax is not None:
-        return variable.value <= valueMax
+        return value <= float(valueMax)
 

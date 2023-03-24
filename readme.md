@@ -44,7 +44,7 @@ must have a value even if not updated.
 
   ```
   {
-      "email": "youreNEWmail@anything.com",
+      "email": "youreNEWemail@anything.com",
       "password": "supersecureNEWpassword",
       "name": "John Doe",
       "institution": "uni"
@@ -102,6 +102,7 @@ the '%d/%m/%Y' format, time must be in the format '%H:%M:%S'.
       "name": "potassium",
       "value-min": 2.0,
       "value-max" 2.3,
+      "category" "solo",
       "polygon": [
           {"longitude": 1.0, "latitude": 2.0}, 
           {"longitude": 2.0, "latitude": 2.0},

@@ -3,6 +3,7 @@ from datetime import datetime
 from django.test import Client
 from django.test import TestCase
 from agroapi.model.models import Location, Date, Variable
+from rest_framework import status
 from neomodel import db, clear_neo4j_database
 
 
@@ -72,5 +73,35 @@ class testDataManagement(TestCase):
         self.client.post('/v1/insert/', {"data": json.dumps(data)})
 
         response = self.client.get('/v1/read/', {})
-        print(response.data)
         self.assertEquals(len(json.loads(response.data)), len(data))
+
+        response = self.client.get('/v1/read/', {"name": "fosforo"})
+        self.assertEquals(len(json.loads(response.data)), 1)
+
+        response = self.client.get('/v1/read/', {"name": "fosforo potassium"})
+        self.assertEquals(len(json.loads(response.data)), 2)
+
+        response = self.client.get('/v1/read/', {"name": ['fosforo potassium']})
+        self.assertEquals(len(json.loads(response.data)), 2)
+
+        response = self.client.get('/v1/read/', {"name": ''})
+        self.assertEquals(len(json.loads(response.data)), 0)
+
+        response = self.client.get('/v1/read/', {"name": "fosforo potassium", 'value-min': 0.9})
+        self.assertEquals(len(json.loads(response.data)), 1)
+
+        response = self.client.get('/v1/read/', {"value-min": 0.5, 'value-max': 1})
+        self.assertEquals(len(json.loads(response.data)), 1)
+
+        response = self.client.get('/v1/read/', {"value-min": 0.5, 'value-max': ''})
+        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        response = self.client.get('/v1/read/', {"value-min": 'a', 'value-max': ''})
+        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        response = self.client.get('/v1/read/', {"category": 'a'})
+        self.assertEquals(len(json.loads(response.data)), 0)
+
+        response = self.client.get('/v1/read/', {"category": 'produção vegetal'})
+        self.assertEquals(len(json.loads(response.data)), 1)
+
