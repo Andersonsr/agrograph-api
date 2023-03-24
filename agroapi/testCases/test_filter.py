@@ -25,19 +25,19 @@ class test_filter(TestCase):
         data = [
             {
                 "longitude": 2.1, "latitude": 0.1, "date": "10/02/2021", "time": "10:00:00",
-                "name": "potasio", "unit": "mg/m²", "value": 0.08, "category": "solo"
+                "variable": "potasio", "unit": "mg/m²", "value": 0.08, "category": "solo"
             },
             {
                 "longitude": 2.1, "latitude": 0.5, "date": "10/02/2021", "time": "12:00:00",
-                "name": "fosforo", "unit": "mg/m²", "value": 0.91, "category": "solo"
+                "variable": "fosforo", "unit": "mg/m²", "value": 0.91, "category": "solo"
             },
             {
                 "longitude": -2.1, "latitude": -0.6, "date": "13/02/2021",
-                "name": "potassium", "unit": "mg/m²", "value": 0.091, "category": "solo"
+                "variable": "potassium", "unit": "mg/m²", "value": 0.091, "category": "solo"
             },
             {
                 "longitude": -2.1, "latitude": -0.1, "date": "14/02/2021",
-                "name": "NDVI", "unit": "ndvi", "value": 1.2, "category": "produção vegetal"
+                "variable": "NDVI", "unit": "ndvi", "value": 1.2, "category": "produção vegetal"
             }
         ]
         self.client.post('/v1/insert/', {"data": json.dumps(data)})

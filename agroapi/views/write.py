@@ -24,14 +24,14 @@ def insert(request):
             try:
                 latitude = row['latitude']
                 longitude = row['longitude']
-                name = row['name']
+                name = row['variable']
                 value = row['value']
                 unit = row['unit']
                 date = row['date']
                 time = row['time'] if 'time' in row else None
                 category = row['category']
-            except AttributeError:
-                return Response({'message': 'longitude, latitude. variable name, value, unit, date are required'},
+            except KeyError:
+                return Response({'message': 'longitude, latitude. variable, value, unit, date are required'},
                                 status=status.HTTP_400_BAD_REQUEST)
             try:
                 writeMeasurement(longitude, latitude, name, value, unit, date, time, category, email, uid)

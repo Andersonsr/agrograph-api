@@ -77,6 +77,7 @@ def applyALlFilters(email=None, uid=None, polygon=None, dateMin=None, dateMax=No
             if (varNames is None or variable.name in varNames) and checkValue(variable.value, valueMin, valueMax):
                 if category is None or variable.category == category:
                     info['variable'] = variable.name
+                    info['category'] = variable.category
                     info['value'] = variable.value
                     info['unit'] = variable.unit
                     data.append(info)

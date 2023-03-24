@@ -28,19 +28,19 @@ class testDataManagement(TestCase):
         data = [
             {
                 "latitude": 0.1, "longitude": 2.1, "date": "10/02/2021", "time": "10:00:00",
-                "name": "potasio", "unit": "mg/m²", "value": 0.08, "category": "solo"
+                "variable": "potasio", "unit": "mg/m²", "value": 0.08, "category": "solo"
             },
             {
                 "latitude": 0.1, "longitude": 2.1, "date": "10/02/2021", "time": "10:00:00",
-                "name": "fosforo", "unit": "mg/m²", "value": 0.91, "category": "solo"
+                "variable": "fosforo", "unit": "mg/m²", "value": 0.91, "category": "solo"
             },
             {
                 "latitude": -0.1, "longitude": -2.1, "date": "13/02/2021",
-                "name": "potassium", "unit": "mg/m²", "value": 0.091, "category": "solo"
+                "variable": "potassium", "unit": "mg/m²", "value": 0.091, "category": "solo"
             },
             {
                 "latitude": -0.1, "longitude": -2.1, "date": "13/02/2021",
-                "name": "NDVI", "unit": "ndvi", "value": 1.2, "category": "produção vegetal"
+                "variable": "NDVI", "unit": "ndvi", "value": 1.2, "category": "produção vegetal"
             }
         ]
         response = self.client.post('/v1/insert/', {"data": json.dumps(data)})
@@ -55,25 +55,32 @@ class testDataManagement(TestCase):
         data = [
             {
                 "latitude": 0.1, "longitude": 2.1, "date": "10/02/2021", "time": "10:00:00",
-                "name": "potasio", "unit": "mg/m²", "value": 0.08, "category": "solo"
+                "variable": "potasio", "unit": "mg/m²", "value": 0.08, "category": "solo"
             },
             {
                 "latitude": 0.1, "longitude": 2.1, "date": "10/02/2021", "time": "10:00:00",
-                "name": "fosforo", "unit": "mg/m²", "value": 0.91, "category": "solo"
+                "variable": "fosforo", "unit": "mg/m²", "value": 0.91, "category": "solo"
             },
             {
                 "latitude": -0.1, "longitude": -2.1, "date": "13/02/2021",
-                "name": "potassium", "unit": "mg/m²", "value": 0.091, "category": "solo"
+                "variable": "potassium", "unit": "mg/m²", "value": 0.091, "category": "solo"
             },
             {
                 "latitude": -0.1, "longitude": -2.1, "date": "13/02/2021",
-                "name": "NDVI", "unit": "ndvi", "value": 1.2, "category": "produção vegetal"
+                "variable": "NDVI", "unit": "ndvi", "value": 1.2, "category": "produção vegetal"
             }
         ]
         self.client.post('/v1/insert/', {"data": json.dumps(data)})
 
         response = self.client.get('/v1/read/', {})
+        data = json.loads(response.data)
         self.assertEquals(len(json.loads(response.data)), len(data))
+        self.assertIn("latitude", data[0])
+        self.assertIn("longitude", data[0])
+        self.assertIn("variable", data[0])
+        self.assertIn("unit", data[0])
+        self.assertIn("category", data[0])
+        self.assertIn("date", data[0])
 
         response = self.client.get('/v1/read/', {"name": "fosforo"})
         self.assertEquals(len(json.loads(response.data)), 1)
@@ -104,4 +111,6 @@ class testDataManagement(TestCase):
 
         response = self.client.get('/v1/read/', {"category": 'produção vegetal'})
         self.assertEquals(len(json.loads(response.data)), 1)
+
+
 

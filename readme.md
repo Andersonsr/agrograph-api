@@ -72,7 +72,7 @@ the '%d/%m/%Y' format, time must be in the format '%H:%M:%S'.
       {
         "longitude": 1.0, 
         "latitude": 0.0, 
-        "name": "potassium",
+        "variable": "potassium",
         "unit": "mmol/dm³",
         "value": 2.1,
         "category": "solo",
