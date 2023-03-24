@@ -117,7 +117,7 @@ return every measurement owned by the user.
   ```
   
 The result is a json array containing multiple objects similar 
-to the objects described in [POST insert/](#POST insert/). 
+to the objects described in [POST insert](#post-insert). 
 
 ## Reminder
 to run all test cases the following command line must be executed,
