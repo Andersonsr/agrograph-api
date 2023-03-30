@@ -17,6 +17,7 @@ class testUserManagement(TestCase):
         client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
             'password': 'strongpassword',
+            'password2': 'strongpassword',
             'name': 'anderson',
             'institution': 'unipampa'
         })
@@ -37,6 +38,7 @@ class testUserManagement(TestCase):
             client.post('/v1/sing-in/', {
                 'email': 'anderson@.com',
                 'password': 'strongpassword',
+                'password2': 'strongpassword',
                 'name': 'anderson',
                 'institution': 'unipampa'
             })
@@ -49,12 +51,14 @@ class testUserManagement(TestCase):
         client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
             'password': 'strongpassword',
+            'password2': 'strongpassword',
             'name': 'anderson',
             'institution': 'unipampa'
         })
         response = client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
             'password': 'strongpassword',
+            'password2': 'strongpassword',
             'name': 'anderson 2',
             'institution': 'unipampa'
         })
@@ -66,6 +70,7 @@ class testUserManagement(TestCase):
         client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
             'password': 'strongpassword',
+            'password2': 'strongpassword',
             'name': 'anderson',
             'institution': 'unipampa'
         })
@@ -82,6 +87,7 @@ class testUserManagement(TestCase):
         client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
             'password': 'strongpassword',
+            'password2': 'strongpassword',
             'name': 'anderson',
             'institution': 'unipampa'
         })
@@ -103,6 +109,7 @@ class testUserManagement(TestCase):
         client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
             'password': 'strongpassword',
+            'password2': 'strongpassword',
             'name': 'anderson',
             'institution': 'unipampa'
         })

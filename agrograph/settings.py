@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-lvuw5q5yawc@y@9q-!83hzy(%@rekdf2*bhe0c_loh^ak9y3u_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['projetos-ufp.si.tec.br', 'localhost']
+ALLOWED_HOSTS = ['projetos-ufp.si.tec.br', 'localhost', 'php']
 
 
 # Application definition

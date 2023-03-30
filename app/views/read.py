@@ -1,9 +1,8 @@
 import json
 from rest_framework import status
-from rest_framework.response import Response
+from django.http import JsonResponse
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
-from ..model.reader import readMeasurementsQuery, readUserMeasurements
 from ..utils.filters import applyALlFilters
 
 
@@ -15,7 +14,7 @@ def read(request):
         uid = request.session['uid']
         logged = request.session['logged'] == 'yes'
     except AttributeError:
-        return Response({'message': 'not authorized, login first'}, status=status.HTTP_403_FORBIDDEN)
+        return JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_403_FORBIDDEN)
 
     if logged:
         dateMin = request.GET.get("date-min")
@@ -32,8 +31,8 @@ def read(request):
             data = applyALlFilters(email, uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin, timeMax, varName,
                                    category)
         except KeyError:
-            return Response({'message': 'User has no measurements'}, status.HTTP_404_NOT_FOUND)
+            return JsonResponse({'message': 'User has no measurements'}, status=status.HTTP_404_NOT_FOUND)
         except ValueError:
-            return Response({'message': 'value-max and value-min must be float'}, status.HTTP_400_BAD_REQUEST)
-        return Response(json.dumps(data), status=status.HTTP_200_OK)
+            return JsonResponse({'message': 'value-max and value-min must be float'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"data": data}, status=status.HTTP_200_OK, safe=False)
     return

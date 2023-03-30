@@ -14,6 +14,7 @@ class test_filter(TestCase):
         client.post('/v1/sing-in/', {
             'email': 'andersonsr@email.com',
             'password': 'strongpassword',
+            'password2': 'strongpassword',
             'name': 'anderson rosa',
             'institution': 'unipampa'
         })

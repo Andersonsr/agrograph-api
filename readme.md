@@ -124,5 +124,5 @@ to run all test cases the following command line must be executed,
 Neo4j database need to be running.
 
 ```run tests
-python manage.py test agroapi.testCases
+python manage.py test app.testCases
 ```
