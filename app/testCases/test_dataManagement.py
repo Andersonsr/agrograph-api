@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from django.test import Client
 from django.test import TestCase
-from agroapi.model.models import Location, Date, Variable
+from app.model.models import Location, Date, Variable
 from rest_framework import status
 from neomodel import db, clear_neo4j_database
 

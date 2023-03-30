@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.db import IntegrityError
 from django.contrib.auth.models import User
-from agroapi.model.models import UserProfile
+from app.model.models import UserProfile
 from django.contrib.auth import authenticate
 
 

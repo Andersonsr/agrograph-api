@@ -1,6 +1,6 @@
 from datetime import datetime
 from ..utils.hasher import hashIt
-from agroapi.model.models import UserProfile, Location, Variable, Measurement, Date
+from app.model.models import UserProfile, Location, Variable, Measurement, Date
 from ..utils.constants import dateFormat, timeFormat
 
 

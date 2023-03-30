@@ -59,7 +59,7 @@ ROOT_URLCONF = 'agrograph.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../agroapi/templates'), ],
+        'DIRS': [os.path.join(BASE_DIR, '../app/templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,7 +85,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.file"
 # TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # NOSE_ARGS = [
 #     '--with-coverage',
-#     '--cover-package=agroapi',
+#     '--cover-package=app',
 # ]
 
 DATABASES = {

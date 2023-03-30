@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from django.test import Client
 from django.test import TestCase
-from agroapi.model.models import UserProfile
+from app.model.models import UserProfile
 from neomodel import db, clear_neo4j_database
 
 

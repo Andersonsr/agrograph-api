@@ -1,4 +1,4 @@
-from agroapi.model.models import UserProfile
+from app.model.models import UserProfile
 from neomodel import db
 
 
