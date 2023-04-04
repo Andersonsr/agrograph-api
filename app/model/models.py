@@ -21,19 +21,19 @@ class UserProfile(StructuredNode):
 
 
 class Location(StructuredNode):
-    uid = UniqueIdProperty()
+    # uid = UniqueIdProperty()
     latitude = FloatProperty(required=True)
     longitude = FloatProperty(required=True)
 
 
 class Date(StructuredNode):
-    uid = UniqueIdProperty()
+    # uid = UniqueIdProperty()
     date = DateTimeFormatProperty(required=True, unique_index=True, format='%d/%m/%Y')
 
 
 class Variable(StructuredNode):
     categories = {'solo': 1, 'produção vegetal': 2, 'produção animal': 3, 'meteorologia': 4}
-    uid = UniqueIdProperty()
+    # uid = UniqueIdProperty()
     name = StringProperty(required=True)
     unit = StringProperty(required=True)
     value = FloatProperty(required=True)
@@ -42,7 +42,7 @@ class Variable(StructuredNode):
 
 class Measurement(StructuredNode):
     time = DateTimeFormatProperty(format='%H:%M:%S')
-    uid = UniqueIdProperty()
+    # uid = UniqueIdProperty()
     hash = StringProperty(required=True)
 
     # vertices

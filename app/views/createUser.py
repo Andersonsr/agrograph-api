@@ -17,11 +17,11 @@ def createUser(request):
         name = request.POST['name']
         institution = request.POST['institution']
     except KeyError:
-        return JsonResponse({'message': 'email, password, name, institution are required'},
+        return JsonResponse({"message": "email, password, name, institution are required"},
                             status=status.HTTP_400_BAD_REQUEST)
 
     if password2 != password:
-        return JsonResponse({'message': 'passwords are different'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"message": "passwords are different"}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         User.objects.get(username=email)
@@ -30,9 +30,9 @@ def createUser(request):
             User.objects.create_user(username=email, password=password)
             profile = UserProfile(institution=institution, name=name, email=email)
             profile.save()
-            return JsonResponse({'message': 'ok'}, status=status.HTTP_200_OK)
+            return JsonResponse({"message": "ok"}, status=status.HTTP_200_OK)
         except IntegrityError:
-            return JsonResponse({'message': 'this email is already registered'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({"message": "this email is already registered"}, status=status.HTTP_403_FORBIDDEN)
 
-    return JsonResponse({'message': 'this email is already registered'}, status=status.HTTP_403_FORBIDDEN)
+    return JsonResponse({"message": "this email is already registered"}, status=status.HTTP_409_CONFLICT)
 

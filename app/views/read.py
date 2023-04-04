@@ -34,5 +34,5 @@ def read(request):
             return JsonResponse({'message': 'User has no measurements'}, status=status.HTTP_404_NOT_FOUND)
         except ValueError:
             return JsonResponse({'message': 'value-max and value-min must be float'}, status=status.HTTP_400_BAD_REQUEST)
-        return JsonResponse({"data": data}, status=status.HTTP_200_OK, safe=False)
+        return JsonResponse({"data": data}, status=status.HTTP_200_OK)
     return

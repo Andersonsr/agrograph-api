@@ -13,7 +13,7 @@ def editUser(request):
         isLogged = 'logged' in request.session
         email = request.session['email']
     except KeyError:
-        return JsonResponse({'message': 'you are not logged in'}, status=status.HTTP_403_FORBIDDEN)
+        return JsonResponse({"message": "you are not logged in"}, status=status.HTTP_403_FORBIDDEN)
 
     try:
         newName = request.POST['name']
@@ -21,7 +21,7 @@ def editUser(request):
         newPass = request.POST['password']
         newInst = request.POST['institution']
     except KeyError:
-        return JsonResponse({'message': 'name, email, password, institution are required'},
+        return JsonResponse({"message": "name, email, password, institution are required"},
                             status=status.HTTP_400_BAD_REQUEST)
 
     if isLogged:
@@ -38,6 +38,6 @@ def editUser(request):
         userProfile.save()
 
         request.session['email'] = newEmail
-        return JsonResponse({'message': 'ok'}, status=status.HTTP_200_OK)
+        return JsonResponse({"message": "ok"}, status=status.HTTP_200_OK)
 
-    return JsonResponse({'message': 'you are not logged in'}, status=status.HTTP_403_FORBIDDEN)
+    return JsonResponse({"message": "you are not logged in"}, status=status.HTTP_403_FORBIDDEN)
