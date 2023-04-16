@@ -28,8 +28,15 @@ SECRET_KEY = 'django-insecure-lvuw5q5yawc@y@9q-!83hzy(%@rekdf2*bhe0c_loh^ak9y3u_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['projetos-ufp.si.tec.br', 'localhost', 'php']
-
+ALLOWED_HOSTS = ['projetos-ufp.si.tec.br', 'localhost', 'agrograph-php-1', '127.0.0.1']
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:80",
+    "http://localhost",
+    "http://agrograph-php-1:80",
+    "http://agrograph-php-1",
+    "http://127.0.0.1:80"
+]
 
 # Application definition
 
@@ -122,6 +129,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://localhost",
     "https://127.0.0.1",
     "http://127.0.0.1",
+
 ]
 
 # Internationalization

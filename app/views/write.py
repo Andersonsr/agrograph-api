@@ -29,7 +29,7 @@ def insert(request):
                 time = row['time'] if 'time' in row else None
                 category = row['category']
             except KeyError:
-                return JsonResponse({'message': 'longitude, latitude. variable, value, unit, date are required'},
+                return JsonResponse({'message': 'longitude, latitude, variable, value, unit, date are required'},
                                     status=status.HTTP_400_BAD_REQUEST)
             try:
                 writeMeasurement(longitude, latitude, name, value, unit, date, time, category, email, uid)

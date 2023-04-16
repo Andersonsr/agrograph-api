@@ -12,5 +12,5 @@ urlpatterns = [
     path('sing-in/', createUser, name='sing-in'),
     path('edit-profile/', editUser, name='edit profile'),
     path('insert/', insert, name='insert data'),
-    path('read/', read, name='read data')
+    path('measurements/', read, name='read data')
 ]

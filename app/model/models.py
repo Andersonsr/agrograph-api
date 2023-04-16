@@ -17,23 +17,20 @@ class UserProfile(StructuredNode):
     email = EmailProperty(required=True, unique_index=True)
 
     # vertices
-    measurements = RelationshipTo('Measurement', 'measurements')
+    measurements = RelationshipTo('Measurement', 'Measurements')
 
 
 class Location(StructuredNode):
-    # uid = UniqueIdProperty()
     latitude = FloatProperty(required=True)
     longitude = FloatProperty(required=True)
 
 
 class Date(StructuredNode):
-    # uid = UniqueIdProperty()
     date = DateTimeFormatProperty(required=True, unique_index=True, format='%d/%m/%Y')
 
 
 class Variable(StructuredNode):
     categories = {'solo': 1, 'produção vegetal': 2, 'produção animal': 3, 'meteorologia': 4}
-    # uid = UniqueIdProperty()
     name = StringProperty(required=True)
     unit = StringProperty(required=True)
     value = FloatProperty(required=True)
@@ -42,11 +39,10 @@ class Variable(StructuredNode):
 
 class Measurement(StructuredNode):
     time = DateTimeFormatProperty(format='%H:%M:%S')
-    # uid = UniqueIdProperty()
     hash = StringProperty(required=True)
 
     # vertices
-    location = RelationshipTo('Location', 'where')
-    variables = RelationshipTo('Variable', 'what')
-    date = RelationshipTo('Date', 'when')
+    location = RelationshipTo('Location', 'Where')
+    variables = RelationshipTo('Variable', 'What')
+    date = RelationshipTo('Date', 'When')
 

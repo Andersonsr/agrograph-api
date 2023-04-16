@@ -34,5 +34,5 @@ def createUser(request):
         except IntegrityError:
             return JsonResponse({"message": "this email is already registered"}, status=status.HTTP_403_FORBIDDEN)
 
-    return JsonResponse({"message": "this email is already registered"}, status=status.HTTP_409_CONFLICT)
+    return JsonResponse({"message": "this email is already registered"}, status=status.HTTP_403_FORBIDDEN)
 

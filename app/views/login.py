@@ -21,7 +21,7 @@ def login(request):
     try:
         profile = UserProfile.nodes.get(email=email)
     except DoesNotExist:
-        return JsonResponse({"message": "user not found"}, status=status.HTTP_401_UNAUTHORIZED)
+        return JsonResponse({"message": "wrong user or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
     if user is not None:
         request.session['email'] = email
@@ -30,5 +30,6 @@ def login(request):
         return JsonResponse({"message": "user authenticated"}, status=status.HTTP_200_OK)
 
     else:
-        return JsonResponse({"message": "user not found"}, status=status.HTTP_401_UNAUTHORIZED)
+        return JsonResponse({"message": "wrong user or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
+    return JsonResponse({"message": "wrong user or password"}, status=status.HTTP_401_UNAUTHORIZED)

@@ -73,7 +73,7 @@ class testDataManagement(TestCase):
         ]
         self.client.post('/v1/insert/', {"data": json.dumps(data)})
 
-        response = self.client.get('/v1/read/', {})
+        response = self.client.get('/v1/measurements/', {})
         responseData = json.loads(response.content)["data"]
         self.assertEquals(len(responseData), len(data))
         self.assertIn("latitude", data[0])
@@ -83,34 +83,34 @@ class testDataManagement(TestCase):
         self.assertIn("category", data[0])
         self.assertIn("date", data[0])
 
-        response = self.client.get('/v1/read/', {"name": "fosforo"})
+        response = self.client.get('/v1/measurements/', {"name": "fosforo"})
         self.assertEquals(len(json.loads(response.content)["data"]), 1)
 
-        response = self.client.get('/v1/read/', {"name": "fosforo potassium"})
+        response = self.client.get('/v1/measurements/', {"name": "fosforo potassium"})
         self.assertEquals(len(json.loads(response.content)["data"]), 2)
 
-        response = self.client.get('/v1/read/', {"name": ['fosforo potassium']})
+        response = self.client.get('/v1/measurements/', {"name": ['fosforo potassium']})
         self.assertEquals(len(json.loads(response.content)["data"]), 2)
 
-        response = self.client.get('/v1/read/', {"name": ''})
+        response = self.client.get('/v1/measurements/', {"name": ''})
         self.assertEquals(len(json.loads(response.content)["data"]), 0)
 
-        response = self.client.get('/v1/read/', {"name": "fosforo potassium", 'value-min': 0.9})
+        response = self.client.get('/v1/measurements/', {"name": "fosforo potassium", 'value-min': 0.9})
         self.assertEquals(len(json.loads(response.content)["data"]), 1)
 
-        response = self.client.get('/v1/read/', {"value-min": 0.5, 'value-max': 1})
+        response = self.client.get('/v1/measurements/', {"value-min": 0.5, 'value-max': 1})
         self.assertEquals(len(json.loads(response.content)["data"]), 1)
 
-        response = self.client.get('/v1/read/', {"value-min": 0.5, 'value-max': ''})
+        response = self.client.get('/v1/measurements/', {"value-min": 0.5, 'value-max': ''})
         self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        response = self.client.get('/v1/read/', {"value-min": 'a', 'value-max': ''})
+        response = self.client.get('/v1/measurements/', {"value-min": 'a', 'value-max': ''})
         self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        response = self.client.get('/v1/read/', {"category": 'a'})
+        response = self.client.get('/v1/measurements/', {"category": 'a'})
         self.assertEquals(len(json.loads(response.content)["data"]), 0)
 
-        response = self.client.get('/v1/read/', {"category": 'produção vegetal'})
+        response = self.client.get('/v1/measurements/', {"category": 'produção vegetal'})
         self.assertEquals(len(json.loads(response.content)["data"]), 1)
 
 
