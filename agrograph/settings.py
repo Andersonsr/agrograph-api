@@ -13,6 +13,13 @@ import os
 from pathlib import Path
 from neomodel import config
 from neomodel import install_labels
+from dotenv import load_dotenv
+
+load_dotenv()
+host = os.environ.get('NEO4J_HOST')
+password = os.environ.get('NEO4J_PASSWORD')
+user = os.environ.get('NEO4J_USER')
+port = os.environ.get('NEO4J_BOLT_PORT')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -82,11 +89,9 @@ TEMPLATES = [
     },
 ]
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-WSGI_APPLICATION = 'agrograph.wsgi.application'
-config.DATABASE_URL = 'bolt://neo4j:123456@localhost:7687'
+# WSGI_APPLICATION = 'agrograph.wsgi.application'
+config.DATABASE_URL = 'bolt://' + user + ':' + password + '@' + host + ':7687'
 config.AUTO_INSTALL_LABELS = True
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
