@@ -72,8 +72,9 @@ class testDataManagement(TestCase):
             }
         ]
         self.client.post('/v1/insert/', {"data": json.dumps(data)})
-
         response = self.client.get('/v1/measurements/', {})
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+
         responseData = json.loads(response.content)["data"]
         self.assertEquals(len(responseData), len(data))
         self.assertIn("latitude", data[0])

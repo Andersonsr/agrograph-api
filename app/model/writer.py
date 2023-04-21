@@ -25,8 +25,8 @@ def getOrCreateLocation(longitude, latitude):
     return Location.nodes.get(latitude=latitude, longitude=longitude)
 
 
-def writeMeasurement(longitude, latitude, name, value, unit, date, time, category, email, uid):
-    profile = UserProfile.nodes.get(email=email)
+def writeMeasurement(longitude, latitude, name, value, unit, date, time, category, uid):
+    profile = UserProfile.nodes.get(uid=uid)
     if Measurement.nodes.get_or_none(hash=hashIt(date, time, uid, latitude, longitude)) is None:
         if time is not None:
             timeToInsert = datetime.strptime(time, timeFormat)

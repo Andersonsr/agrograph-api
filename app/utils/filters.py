@@ -56,10 +56,9 @@ def filterByDate(measurements=None, dateMin=None, dateMax=None, timeMin=None, ti
     return response
 
 
-def applyALlFilters(email=None, uid=None, polygon=None, dateMin=None, dateMax=None, valueMin=None, valueMax=None,
-                    timeMin=None, timeMax=None, varNames=None, category=None):
+def applyALlFilters(uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin, timeMax, varNames, category):
     data = []
-    measurements = readUserMeasurements(email, uid)
+    measurements = readUserMeasurements(uid)
     if polygon is not None:
         measurements = filterByLocation(measurements, json.loads(polygon))
 

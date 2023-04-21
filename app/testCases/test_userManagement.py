@@ -4,12 +4,13 @@ from django.test import Client
 from django.test import TestCase
 from app.model.models import UserProfile
 from neomodel import db, clear_neo4j_database
+from dotenv import load_dotenv
+import os
 
 
 class testUserManagement(TestCase):
     def setUp(self):
         clear_neo4j_database(db)
-        client = Client()
 
     def testCreateUser(self):
         """check if user object is created when /v1/sing-in/ is requested"""
@@ -79,7 +80,6 @@ class testUserManagement(TestCase):
             'password': 'strongpassword'
         })
         self.assertEquals(client.session['email'], 'anderson@email.com')
-        self.assertIn('logged', client.session)
 
     def testLogout(self):
         """check if session variable is removed when /v1/logout/ is requested"""

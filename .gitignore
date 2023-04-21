@@ -1,6 +1,5 @@
 # Created by https://www.toptal.com/developers/gitignore/api/pycharm,django,windows,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=pycharm,django,windows,linux
-
 ### Django ###
 *.html
 *.log
@@ -326,7 +325,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-./agrograph/testenv.py
-agrograph/testenv.py
+
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,django,windows,linux
