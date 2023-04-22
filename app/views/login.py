@@ -27,16 +27,17 @@ def login(request):
         return JsonResponse({"message": "wrong user or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
     if user is not None:
+        token = tokenize(profile.lastLogin.strftime(datetimeFormat), profile.uid)
         dateString = datetime.now().strftime(datetimeFormat)
         profile.lastLogin = datetime.strptime(dateString, datetimeFormat)
-        profile.lastToken = tokenize(profile.lastLogin.strftime(datetimeFormat), profile.uid)
+        profile.lastToken = token
         profile.save()
 
         request.session['email'] = email
-        request.session['token'] = profile.lastToken
+        request.session['token'] = token
         responseData = {
                         "message": "ok",
-                        "token": profile.lastToken,
+                        "token": token,
                         "email": email
                         }
         return JsonResponse(responseData, status=status.HTTP_200_OK)
