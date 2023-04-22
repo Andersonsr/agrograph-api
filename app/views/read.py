@@ -15,7 +15,7 @@ def read(request):
     secret = request.GET.get('cross_secret')
     uid = checkLogin(email, token, secret)
     if not uid:
-        return JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_401_UNAUTHORIZED)
 
     dateMin = request.GET.get("date-min")
     dateMax = request.GET.get("date-max")
@@ -31,7 +31,7 @@ def read(request):
         data = applyALlFilters(uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin, timeMax, varName,
                                category)
     except KeyError:
-        return JsonResponse({'message': 'User has no measurements'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'message': 'User has no measurements'}, status=status.HTTP_400_BAD_REQUEST)
     except ValueError:
         return JsonResponse({'message': 'value-max and value-min must be float'}, status=status.HTTP_400_BAD_REQUEST)
     return JsonResponse({"data": data}, status=status.HTTP_200_OK)

@@ -77,20 +77,20 @@ class testUserManagement(TestCase):
             "data": json.dumps(data),
             "cross_secret": cross_secret
         })
-        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
         response = self.client.post('/v1/insert/', {
             "data": json.dumps(data),
             "authToken": self.token,
         })
-        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
         response = self.client.post('/v1/insert/', {
             "data": json.dumps(data),
             "authToken": self.token + '122',
             "cross_secret": cross_secret
         })
-        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def testMeasurements(self):
         """test token authentication on insert/"""
@@ -103,9 +103,9 @@ class testUserManagement(TestCase):
         response = self.client.get('/v1/measurements/', {
             'authToken': self.token,
         })
-        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
         response = self.client.get('/v1/measurements/', {
             'cross_secret': cross_secret
         })
-        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)

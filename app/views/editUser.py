@@ -16,7 +16,7 @@ def editUser(request):
     secret = request.POST.get('cross_secret')
     uid = checkLogin(email, token, secret)
     if not uid:
-        return JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
         newName = request.POST['name']
