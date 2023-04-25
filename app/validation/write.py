@@ -3,8 +3,6 @@ from rest_framework import status
 from django.http import JsonResponse
 from app.utils.constants import DATE_FORMAT, TIME_FORMAT
 from app.utils.datetimeConverter import convertDatetime
-from neomodel.core import DoesNotExist
-from neomodel.exceptions import DeflateError
 from app.utils.constants import CATEGORIES
 
 
@@ -32,13 +30,13 @@ def validate(request):
                                        status=status.HTTP_400_BAD_REQUEST)
 
         newDate = convertDatetime(date, DATE_FORMAT)
-        if not newDate:
+        if newDate is None:
             return False, JsonResponse({'message': 'date format not identified'},
                                        status=status.HTTP_400_BAD_REQUEST)
 
         if time is not None:
             newTime = convertDatetime(time, TIME_FORMAT)
-            if not newTime:
+            if newTime is None:
                 return False, JsonResponse({'message': 'time format not identified'},
                                            status=status.HTTP_400_BAD_REQUEST)
         if category not in CATEGORIES:

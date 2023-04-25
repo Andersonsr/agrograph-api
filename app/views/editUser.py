@@ -15,22 +15,19 @@ def editUser(request):
     if not uid:
         return JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_401_UNAUTHORIZED)
 
-    try:
-        newName = request.POST['name']
-        newEmail = request.POST['email']
-        newPass = request.POST['password']
-        newInst = request.POST['institution']
-    except KeyError:
-        return JsonResponse({"message": "name, email, password, institution are required"},
-                            status=status.HTTP_400_BAD_REQUEST)
+    newName = request.POST['name']
+    newEmail = request.POST['email']
+    newPass = request.POST['password']
+    newInst = request.POST['institution']
+
     try:
         userProfile = UserProfile.nodes.get(uid=uid)
         user = User.objects.get(username=userProfile.email)
     except User.DoesNotExist:
-        JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_400_BAD_REQUEST)
+        JsonResponse({'message': 'user do not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
     except DoesNotExist:
-        JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_400_BAD_REQUEST)
+        JsonResponse({'message': 'user do not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
     user.username = newEmail
     user.set_password(newPass)

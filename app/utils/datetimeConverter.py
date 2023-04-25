@@ -27,11 +27,11 @@ def datetimeCreator(dateString):
 def convertDatetime(dateString, outputFormat):
     dateObj = datetimeCreator(dateString)
     if not dateObj or (dateObj.year == 1900 and outputFormat == DATE_FORMAT):
-        return False
+        return None
     try:
         return dateObj.strftime(outputFormat)
     except ValueError:
-        return False
+        return None
 
 
 if __name__ == "__main__":

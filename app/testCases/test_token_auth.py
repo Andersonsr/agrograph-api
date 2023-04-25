@@ -93,7 +93,7 @@ class testUserManagement(TestCase):
         self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def testMeasurements(self):
-        """test token authentication on insert/"""
+        """test token authentication on measurements/"""
         response = self.client.get('/v1/measurements/', {
             'authToken': self.token,
             'cross_secret': cross_secret

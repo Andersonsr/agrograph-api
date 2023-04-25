@@ -18,14 +18,22 @@ cross_secret = os.environ.get('CROSS_SERVER_SECRET')
 
 def checkLogin(request):
     email = request.session.get('email')
-    token = request.POST.get('authToken')
-    secret = request.POST.get('cross_secret')
+
+    if request.method == "POST":
+        token = request.POST.get('authToken')
+        secret = request.POST.get('cross_secret')
+
+    elif request.method == "GET":
+        token = request.GET.get('authToken')
+        secret = request.GET.get('cross_secret')
+
     if email is not None:
         try:
             user = UserProfile.nodes.get(email=email)
             return user.uid
         except DoesNotExist:
             return False
+
     elif token is not None and secret is not None:
         try:
             user = UserProfile.nodes.get(lastToken=token)
