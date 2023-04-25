@@ -11,10 +11,7 @@ from neomodel.core import DoesNotExist
 @api_view(('POST',))
 @renderer_classes((JSONRenderer, TemplateHTMLRenderer))
 def editUser(request):
-    email = request.session.get('email')
-    token = request.POST.get('authToken')
-    secret = request.POST.get('cross_secret')
-    uid = checkLogin(email, token, secret)
+    uid = checkLogin(request)
     if not uid:
         return JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_401_UNAUTHORIZED)
 

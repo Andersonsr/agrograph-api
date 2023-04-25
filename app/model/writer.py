@@ -2,6 +2,7 @@ from datetime import datetime
 from ..utils.hasher import hashIt
 from app.model.models import UserProfile, Location, Variable, Measurement, Date
 from ..utils.constants import DATE_FORMAT, TIME_FORMAT
+from app.utils.datetimeConverter import convertDatetime
 
 
 def getOrCreateVariable(name, unit, value, category):
@@ -27,6 +28,10 @@ def getOrCreateLocation(longitude, latitude):
 
 def writeMeasurement(longitude, latitude, name, value, unit, date, time, category, uid):
     profile = UserProfile.nodes.get(uid=uid)
+    date = convertDatetime(date, DATE_FORMAT)
+    if time is not None:
+        time = convertDatetime(time, TIME_FORMAT)
+
     if Measurement.nodes.get_or_none(hash=hashIt(date, time, uid, latitude, longitude)) is None:
         if time is not None:
             timeToInsert = datetime.strptime(time, TIME_FORMAT)

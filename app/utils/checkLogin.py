@@ -16,7 +16,10 @@ load_dotenv()
 cross_secret = os.environ.get('CROSS_SERVER_SECRET')
 
 
-def checkLogin(email, token, secret):
+def checkLogin(request):
+    email = request.session.get('email')
+    token = request.POST.get('authToken')
+    secret = request.POST.get('cross_secret')
     if email is not None:
         try:
             user = UserProfile.nodes.get(email=email)

@@ -12,10 +12,7 @@ from app.utils.constants import CATEGORIES
 @api_view(('GET', ))
 @renderer_classes((JSONRenderer, TemplateHTMLRenderer))
 def read(request):
-    email = request.session.get('email')
-    token = request.GET.get('authToken')
-    secret = request.GET.get('cross_secret')
-    uid = checkLogin(email, token, secret)
+    uid = checkLogin(request)
     if not uid:
         return JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -61,7 +58,7 @@ def read(request):
             return JsonResponse({'message': 'category must be string'}, status=status.HTTP_400_BAD_REQUEST)
 
         if category not in CATEGORIES:
-            return JsonResponse({'message': 'category not identified'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'message': 'invalid category'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         data = applyALlFilters(uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin, timeMax,
