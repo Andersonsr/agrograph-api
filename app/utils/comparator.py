@@ -1,17 +1,17 @@
 from datetime import datetime
-from ..utils.constants import dateFormat, timeFormat
+from ..utils.constants import DATE_FORMAT, TIME_FORMAT
 
 
 def checkTime(timeMin=None, timeMax=None, time=None):
     if timeMin is not None and timeMax is not None:
-        return datetime.strptime(timeMin, timeFormat) <= datetime.strptime(time, timeFormat) \
-               <= datetime.strptime(timeMax, timeFormat)
+        return datetime.strptime(timeMin, TIME_FORMAT) <= datetime.strptime(time, TIME_FORMAT) \
+               <= datetime.strptime(timeMax, TIME_FORMAT)
 
     if timeMin is not None:
-        return datetime.strptime(timeMin, timeFormat) <= datetime.strptime(time, timeFormat)
+        return datetime.strptime(timeMin, TIME_FORMAT) <= datetime.strptime(time, TIME_FORMAT)
 
     if timeMax is not None:
-        return datetime.strptime(timeMax, timeFormat) >= datetime.strptime(time, timeFormat)
+        return datetime.strptime(timeMax, TIME_FORMAT) >= datetime.strptime(time, TIME_FORMAT)
 
     return True
 

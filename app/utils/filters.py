@@ -2,7 +2,7 @@ from shapely.geometry import Polygon, Point
 from datetime import datetime
 import json
 from ..model.reader import readUserMeasurements
-from ..utils.constants import dateFormat, timeFormat
+from ..utils.constants import DATE_FORMAT, TIME_FORMAT
 from .comparator import checkTime, checkValue
 
 
@@ -41,13 +41,13 @@ def filterByDate(measurements=None, dateMin=None, dateMax=None, timeMin=None, ti
         keepIt = True
         date = measurement.date.all()[0].date
         if dateMin is not None:
-            keepIt = datetime.strptime(dateMin, dateFormat) < date
-            if datetime.strptime(dateMin, dateFormat) == date:
+            keepIt = datetime.strptime(dateMin, DATE_FORMAT) < date
+            if datetime.strptime(dateMin, DATE_FORMAT) == date:
                 keepIt = checkTime(timeMin, timeMax, measurement.time)
 
         if dateMax is not None:
-            keepIt = datetime.strptime(dateMax, dateFormat) > date
-            if datetime.strptime(dateMax, dateFormat) == date:
+            keepIt = datetime.strptime(dateMax, DATE_FORMAT) > date
+            if datetime.strptime(dateMax, DATE_FORMAT) == date:
                 keepIt = checkTime(timeMin, timeMax, measurement.time)
 
         if keepIt:
@@ -69,7 +69,7 @@ def applyALlFilters(uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin,
         info = {
             "longitude": measurement.location.all()[0].longitude,
             "latitude": measurement.location.all()[0].latitude,
-            "date": measurement.date.all()[0].date.strftime(dateFormat)
+            "date": measurement.date.all()[0].date.strftime(DATE_FORMAT)
         }
 
         for variable in variables:

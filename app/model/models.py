@@ -1,4 +1,5 @@
 from django.db import models
+from app.utils.constants import CATEGORIES
 from neomodel import StructuredNode, \
                      StringProperty, \
                      UniqueIdProperty, \
@@ -33,11 +34,10 @@ class Date(StructuredNode):
 
 
 class Variable(StructuredNode):
-    categories = {'solo': 1, 'produção vegetal': 2, 'produção animal': 3, 'meteorologia': 4}
     name = StringProperty(required=True)
     unit = StringProperty(required=True)
     value = FloatProperty(required=True)
-    category = StringProperty(required=True, choices=categories)
+    category = StringProperty(required=True, choices=CATEGORIES)
 
 
 class Measurement(StructuredNode):

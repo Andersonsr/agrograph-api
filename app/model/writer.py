@@ -1,7 +1,7 @@
 from datetime import datetime
 from ..utils.hasher import hashIt
 from app.model.models import UserProfile, Location, Variable, Measurement, Date
-from ..utils.constants import dateFormat, timeFormat
+from ..utils.constants import DATE_FORMAT, TIME_FORMAT
 
 
 def getOrCreateVariable(name, unit, value, category):
@@ -12,10 +12,10 @@ def getOrCreateVariable(name, unit, value, category):
 
 
 def getOrCreateDate(date):
-    if Date.nodes.get_or_none(date=datetime.strptime(date, dateFormat)) is None:
-        return Date(date=datetime.strptime(date, dateFormat)).save()
+    if Date.nodes.get_or_none(date=datetime.strptime(date, DATE_FORMAT)) is None:
+        return Date(date=datetime.strptime(date, DATE_FORMAT)).save()
 
-    return Date.nodes.get(date=datetime.strptime(date, dateFormat))
+    return Date.nodes.get(date=datetime.strptime(date, DATE_FORMAT))
 
 
 def getOrCreateLocation(longitude, latitude):
@@ -29,7 +29,7 @@ def writeMeasurement(longitude, latitude, name, value, unit, date, time, categor
     profile = UserProfile.nodes.get(uid=uid)
     if Measurement.nodes.get_or_none(hash=hashIt(date, time, uid, latitude, longitude)) is None:
         if time is not None:
-            timeToInsert = datetime.strptime(time, timeFormat)
+            timeToInsert = datetime.strptime(time, TIME_FORMAT)
             digest = hashIt(date, time, uid, latitude, longitude)
             measurement = Measurement(hash=digest, time=timeToInsert)
         else:

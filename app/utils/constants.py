@@ -1,4 +1,5 @@
-dateFormat = '%d/%m/%Y'
-timeFormat = '%H:%M:%S'
-datetimeFormat = '%d/%m/%Y %H:%M:%S'
-expirationTime = 86400
+DATE_FORMAT = '%d/%m/%Y'
+TIME_FORMAT = '%H:%M:%S'
+DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
+EXPIRATION_TIME = 86400
+CATEGORIES = {'solo': 1, 'produção vegetal': 2, 'produção animal': 3, 'meteorologia': 4}

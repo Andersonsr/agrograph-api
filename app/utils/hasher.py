@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 from hashlib import sha256
-from app.utils.constants import datetimeFormat
+from app.utils.constants import DATETIME_FORMAT
 from random import Random
 
 
@@ -25,4 +25,4 @@ def tokenize(timestamp, mail):
 
 if __name__ == '__main__':
     print(hashIt('10/10/2010', '10:45:00', '1', 0.2, 0.3))
-    print(tokenize(datetime.now().strftime(datetimeFormat), 'silenciobruno@homipeixe.com'))
+    print(tokenize(datetime.now().strftime(DATETIME_FORMAT), 'silenciobruno@homipeixe.com'))

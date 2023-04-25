@@ -8,7 +8,7 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.db import IntegrityError
 from ..model.writer import writeMeasurement
 from app.model.models import UserProfile
-from app.utils.constants import expirationTime
+from app.utils.constants import EXPIRATION_TIME
 from neomodel.core import DoesNotExist
 from dotenv import load_dotenv
 load_dotenv()
@@ -26,7 +26,7 @@ def checkLogin(email, token, secret):
     elif token is not None and secret is not None:
         try:
             user = UserProfile.nodes.get(lastToken=token)
-            if (datetime.now() - user.lastLogin).total_seconds() < expirationTime and cross_secret == secret:
+            if (datetime.now() - user.lastLogin).total_seconds() < EXPIRATION_TIME and cross_secret == secret:
                 return user.uid
         except DoesNotExist:
             return False
