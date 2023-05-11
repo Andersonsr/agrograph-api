@@ -7,8 +7,6 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.db import IntegrityError
 from app.model.writer import writeMeasurement
 from app.validation.write import validate
-from neomodel.core import DoesNotExist
-from neomodel.exceptions import DeflateError
 
 
 @api_view(('POST', ))

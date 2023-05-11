@@ -51,4 +51,17 @@ def validate(request):
         if category not in CATEGORIES:
             return False, JsonResponse({'message': 'invalid category'}, status=status.HTTP_400_BAD_REQUEST)
 
+    if valueMax is not None:
+        try:
+            float(valueMax)
+        except ValueError:
+            return False, JsonResponse({"message": "value-max and value-min must be float"},
+                                       status=status.HTTP_400_BAD_REQUEST)
+
+    if valueMin is not None:
+        try:
+            float(valueMin)
+        except ValueError:
+            return False, JsonResponse({"message": "value-max and value-min must be float"},
+                                       status=status.HTTP_400_BAD_REQUEST)
     return True, None
