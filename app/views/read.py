@@ -1,41 +1,37 @@
-import json
 from rest_framework import status
 from django.http import JsonResponse
-from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, renderer_classes, authentication_classes, permission_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from app.utils.filters import applyALlFilters
-from app.utils.checkLogin import checkLogin
-from app.utils.datetimeConverter import convertDatetime
-from app.utils.constants import DATE_FORMAT, TIME_FORMAT
-from app.utils.constants import CATEGORIES
-from app.validation.read import validate
+from app.model.models import UserProfile
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(('GET', ))
 @renderer_classes((JSONRenderer, TemplateHTMLRenderer))
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def read(request):
-    uid = checkLogin(request)
-    if not uid:
-        return JsonResponse({'message': 'not authorized, login first'}, status=status.HTTP_401_UNAUTHORIZED)
 
-    valid, response = validate(request)
-    if not valid:
-        return response
+    if request.user is not None:
+        data = request.GET
 
-    dateMin = request.GET.get("date-min")
-    dateMax = request.GET.get("date-max")
-    polygon = request.GET.get("polygon")
-    valueMax = request.GET.get("value-max")
-    valueMin = request.GET.get("value-min")
-    timeMin = request.GET.get("time-min")
-    timeMax = request.GET.get("time-max")
-    varName = request.GET.get("name")
-    category = request.GET.get("category")
+        dateMin = data.get("date-min")
+        dateMax = data.get("date-max")
+        polygon = data.get("polygon")
+        valueMax = data.get("value-max")
+        valueMin = data.get("value-min")
+        timeMin = data.get("time-min")
+        timeMax = data.get("time-max")
+        varName = data.get("name")
+        category = data.get("category")
 
-    try:
-        data = applyALlFilters(uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin, timeMax,
-                               varName, category)
-    except KeyError:
-        return JsonResponse({'message': 'User has no measurements'}, status=status.HTTP_400_BAD_REQUEST)
+        profile = UserProfile.nodes.get(email=request.user.username)
+        try:
+            data = applyALlFilters(profile.uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin, timeMax,
+                                   varName, category)
+        except KeyError:
+            return JsonResponse({'message': 'User has no measurements'}, status=status.HTTP_400_BAD_REQUEST)
 
-    return JsonResponse({"data": data}, status=status.HTTP_200_OK)
+        return JsonResponse({"data": data}, status=status.HTTP_200_OK)

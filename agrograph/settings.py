@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_neomodel',
     'corsheaders',
+    'rest_framework.authtoken',
+    'django.contrib.admindocs',
     # 'django_nose'
 ]
 

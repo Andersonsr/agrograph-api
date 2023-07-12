@@ -10,7 +10,12 @@ def readUserMeasurements(uid):
 
 
 def readMeasurementsQuery(uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin, timeMax, varNames):
-    query = ""
+    query = "CALL spatial.intersects('layer', {} ) YiELD node " \
+            "OPTIONAL MATCH (v:Variable)<-[oq:What]-(m:Measurement)-[o:Where]->(node)" \
+            "WITH m, v MATCH (m)<-[p:Measurements]-(u:User) WHERE u.email = '$email'" \
+            "RETURN DISTINCT v.tipo" \
+            "ORDER BY v.tipo" \
+            ""
     db.cypher_query(query)
 
     return

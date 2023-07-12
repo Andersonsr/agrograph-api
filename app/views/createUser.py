@@ -10,6 +10,24 @@ from app.model.models import UserProfile
 @api_view(('POST',))
 @renderer_classes((JSONRenderer, TemplateHTMLRenderer))
 def createUser(request):
+    """
+    API endpoint for creating a new user.
+
+    Method: POST
+
+    Parameters:
+    - email: The email of the user (required)
+    - password: The password for the user (required)
+    - password2: Confirmation of the password (required)
+    - name: The name of the user (required)
+    - institution: The institution of the user (required)
+
+    Returns:
+    - 200 OK: User created successfully
+    - 400 BAD REQUEST: Missing or invalid parameters
+    - 409 CONFLICT: User with the same email already exists
+    - 500 INTERNAL SERVER ERROR: An error occurred while creating the user
+    """
     try:
         email = request.POST['email']
         password = request.POST['password']
@@ -17,22 +35,21 @@ def createUser(request):
         name = request.POST['name']
         institution = request.POST['institution']
     except KeyError:
-        return JsonResponse({"message": "email, password, name, institution are required"},
+        return JsonResponse({"message": "Email, password, name, and institution are required."},
                             status=status.HTTP_400_BAD_REQUEST)
 
     if password2 != password:
-        return JsonResponse({"message": "passwords are different"}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"message": "Passwords do not match."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(username=email).exists():
+        return JsonResponse({"message": "This email is already registered."}, status=status.HTTP_409_CONFLICT)
 
     try:
-        User.objects.get(username=email)
-    except User.DoesNotExist:
-        try:
-            User.objects.create_user(username=email, password=password)
-            profile = UserProfile(institution=institution, name=name, email=email)
-            profile.save()
-            return JsonResponse({"message": "ok"}, status=status.HTTP_200_OK)
-        except IntegrityError:
-            return JsonResponse({"message": "this email is already registered"}, status=status.HTTP_403_FORBIDDEN)
+        user = User.objects.create_user(username=email, password=password)
+        profile = UserProfile(institution=institution, name=name, email=email)
+        profile.save()
 
-    return JsonResponse({"message": "this email is already registered"}, status=status.HTTP_403_FORBIDDEN)
-
+        return JsonResponse({"message": "User created successfully."}, status=status.HTTP_201_CREATED)
+    except IntegrityError:
+        return JsonResponse({"message": "An error occurred while creating the user."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)

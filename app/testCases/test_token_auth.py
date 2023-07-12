@@ -8,9 +8,9 @@ from app.model.models import UserProfile
 from neomodel import db, clear_neo4j_database
 from dotenv import load_dotenv
 import os
+import jwt
 
-load_dotenv()
-cross_secret = os.environ.get('CROSS_SERVER_SECRET')
+
 data = [
     {
         "latitude": 0.1, "longitude": 2.1, "date": "10/02/2021", "time": "10:00:00",
@@ -32,9 +32,10 @@ data = [
 
 
 class testUserManagement(TestCase):
-    token = ''
-
     def setUp(self):
+        load_dotenv()
+        self.secret = os.environ.get('CROSS_SERVER_SECRET')
+
         clear_neo4j_database(db)
         self.client.post('/v1/sing-in/', {
             'email': 'anderson@email.com',
@@ -52,60 +53,50 @@ class testUserManagement(TestCase):
 
     def testEditProfileAuth(self):
         """test token authentication on edit-profile/"""
-        response = self.client.post('/v1/edit-profile/', {
-            'email': 'anderson@email.com',
-            'password': 'strongpassword',
-            'name': 'anderson',
-            'institution': 'ABC',
-            'authToken': self.token,
-            'cross_secret': cross_secret
-        })
-
+        payload = {
+            "newEmail": "anderson@email.com",
+            "newPassword": "strongpassword",
+            "newName": "anderson",
+            "newInstitution": "ABC",
+        }
+        client = Client(headers={"Authorization": "Token " + self.token})
+        response = client.post('/v1/edit-profile/', payload)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
+
+        client = Client(headers={"Authorization": "Token a" + self.token})
+        response = client.post('/v1/edit-profile/', payload)
+        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def testInsertAuth(self):
         """test token authentication on insert/"""
-
-        response = self.client.post('/v1/insert/', {
+        payload = {
             "data": json.dumps(data),
-            "authToken": self.token,
-            "cross_secret": cross_secret
-        })
+        }
+        response = self.client.post('/v1/insert/', payload)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
-        response = self.client.post('/v1/insert/', {
+        payload = {
             "data": json.dumps(data),
-            "cross_secret": cross_secret
-        })
+        }
+        client = Client(headers={"Authorization": "Token a" + self.token})
+        response = client.post('/v1/insert/', payload)
         self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-        response = self.client.post('/v1/insert/', {
-            "data": json.dumps(data),
-            "authToken": self.token,
-        })
-        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-        response = self.client.post('/v1/insert/', {
-            "data": json.dumps(data),
-            "authToken": self.token + '122',
-            "cross_secret": cross_secret
-        })
-        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        client = Client(headers={"Authorization": "Token " + self.token})
+        response = client.post('/v1/insert/', payload)
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
     def testMeasurements(self):
         """test token authentication on measurements/"""
-        response = self.client.get('/v1/measurements/', {
+        payload = {
             'authToken': self.token,
-            'cross_secret': cross_secret
-        })
+        }
+
+        client = Client(headers={"Authorization": "Token " + self.token})
+        response = client.get('/v1/measurements/', payload)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
-        response = self.client.get('/v1/measurements/', {
-            'authToken': self.token,
-        })
+        client = Client(headers={"Authorization": "Token a" + self.token})
+        response = self.client.get('/v1/measurements/', {})
         self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-        response = self.client.get('/v1/measurements/', {
-            'cross_secret': cross_secret
-        })
-        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)

@@ -1,6 +1,6 @@
+import json
 import os
 from datetime import datetime
-
 from rest_framework import status
 from django.http import JsonResponse
 from rest_framework.decorators import api_view, renderer_classes
@@ -11,34 +11,44 @@ from app.model.models import UserProfile
 from app.utils.constants import EXPIRATION_TIME
 from neomodel.core import DoesNotExist
 from dotenv import load_dotenv
-load_dotenv()
-
-cross_secret = os.environ.get('CROSS_SERVER_SECRET')
+import jwt
 
 
 def checkLogin(request):
+    load_dotenv()
+    cross_secret = os.environ.get('CROSS_SERVER_SECRET')
+
+    # session authentication
     email = request.session.get('email')
-
-    if request.method == "POST":
-        token = request.POST.get('authToken')
-        secret = request.POST.get('cross_secret')
-
-    elif request.method == "GET":
-        token = request.GET.get('authToken')
-        secret = request.GET.get('cross_secret')
-
     if email is not None:
         try:
             user = UserProfile.nodes.get(email=email)
-            return user.uid
+            return user.uid, None
         except DoesNotExist:
-            return False
+            return False, None
 
-    elif token is not None and secret is not None:
+    # token cross server authentication
+    if request.method == "POST":
+        if 'jwt' not in request.POST:
+            return False, None
+
+        print("received "+str(request.POST['jwt']))
+        data = jwt.decode(request.POST['jwt'], cross_secret, algorithms=["HS256"])
+
+    elif request.method == "GET":
+        if 'jwt' not in request.GET:
+            return False, None
+        data = jwt.decode(request.GET['jwt'], cross_secret, algorithms=["HS256"])
+
+    # check token expiration time
+    if data is not None:
         try:
-            user = UserProfile.nodes.get(lastToken=token)
-            if (datetime.now() - user.lastLogin).total_seconds() < EXPIRATION_TIME and cross_secret == secret:
-                return user.uid
+            user = UserProfile.nodes.get(lastToken=data['authToken'])
+            if (datetime.now() - user.lastLogin).total_seconds() < EXPIRATION_TIME:
+                return user.uid, data
+
         except DoesNotExist:
-            return False
+            return False, None
+        except AttributeError:
+            return False, None
     return False
