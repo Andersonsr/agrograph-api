@@ -15,7 +15,7 @@ class CreateUserTestCase(TestCase):
         """
         Test creating a new user with valid data.
         """
-        url = '/v1/sing-in/'
+        url = '/v1/sign-in/'
         data = {
             'email': 'test@example.com',
             'password': 'testpassword',
@@ -36,7 +36,7 @@ class CreateUserTestCase(TestCase):
         """
         Test creating a new user with missing required fields.
         """
-        url = '/v1/sing-in/'
+        url = '/v1/sign-in/'
         data = {
             'email': 'test@example.com',
             'password': 'testpassword',
@@ -49,13 +49,13 @@ class CreateUserTestCase(TestCase):
 
         # Verify that the user and profile are not created in the database
         self.assertFalse(User.objects.filter(username='test@example.com').exists())
-        self.assertIsNotNone(UserProfile.nodes.first_or_none(email='test@example.com'))
+        self.assertIsNone(UserProfile.nodes.first_or_none(email='test@example.com'))
 
     def test_create_user_password_mismatch(self):
         """
         Test creating a new user with mismatching passwords.
         """
-        url = '/v1/sing-in/'
+        url = '/v1/sign-in/'
         data = {
             'email': 'test@example.com',
             'password': 'testpassword',
@@ -70,7 +70,7 @@ class CreateUserTestCase(TestCase):
 
         # Verify that the user and profile are not created in the database
         self.assertFalse(User.objects.filter(username='test@example.com').exists())
-        self.assertIsNotNone(UserProfile.nodes.first_or_none(email='test@example.com'))
+        self.assertIsNone(UserProfile.nodes.first_or_none(email='test@example.com'))
 
     def test_create_user_existing_email(self):
         """
@@ -79,7 +79,7 @@ class CreateUserTestCase(TestCase):
         # Create a user with the same email
         User.objects.create_user(username='test@example.com', password='testpassword')
 
-        url = '/v1/sing-in/'
+        url = '/v1/sign-in/'
         data = {
             'email': 'test@example.com',
             'password': 'testpassword',
@@ -94,4 +94,4 @@ class CreateUserTestCase(TestCase):
 
         # Verify that the user and profile are not created again in the database
         self.assertTrue(User.objects.filter(username='test@example.com').exists())
-        self.assertIsNotNone(UserProfile.nodes.first_or_none(email='test@example.com'))
+        self.assertIsNone(UserProfile.nodes.first_or_none(email='test@example.com'))

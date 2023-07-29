@@ -1,17 +1,17 @@
 from rest_framework import status
 from django.http import JsonResponse
-from rest_framework.decorators import api_view, renderer_classes, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, renderer_classes, authentication_classes
+from django.contrib.auth.decorators import login_required
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.contrib.auth.models import User
 from app.model.models import UserProfile
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(('POST',))
 @renderer_classes((JSONRenderer, TemplateHTMLRenderer))
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
 def editUser(request):
     """
     API endpoint for editing user information.
@@ -30,6 +30,9 @@ def editUser(request):
     - 401 UNAUTHORIZED: User authentication failed
     - 500 INTERNAL SERVER ERROR: An error occurred while updating user information
     """
+    if not request.user.is_authenticated:
+        return JsonResponse({'message': 'User authentication failed, login first'}, status=status.HTTP_401_UNAUTHORIZED)
+
     data = request.POST
 
     newName = data.get('newName')

@@ -1,0 +1,11 @@
+FROM neo4j:4.4
+
+EXPOSE 7474
+EXPOSE 7687
+
+VOLUME /logs /data 
+
+RUN apt update
+RUN apt install nano -y
+
+ADD https://github.com/neo4j-contrib/spatial/releases/download/0.28.1-neo4j-4.4.3/neo4j-spatial-0.28.1-neo4j-4.4.3-server-plugin.jar plugins/

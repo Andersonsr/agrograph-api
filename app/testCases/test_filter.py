@@ -10,19 +10,17 @@ class test_filter(TestCase):
 
     def setUp(self) -> None:
         clear_neo4j_database(db)
-        client = Client()
-        client.post('/v1/sing-in/', {
+        self.client = Client()
+        self.client.post('/v1/sing-in/', {
             'email': 'andersonsr@email.com',
             'password': 'strongpassword',
             'password2': 'strongpassword',
             'name': 'anderson rosa',
             'institution': 'unipampa'
         })
-        session = self.client.session
-        session['email'] = 'andersonsr@email.com'
-        session['logged'] = 'yes'
-        session['uid'] = 'c7f049c2dc8746c6bcc3718730b77967'
-        session.save()
+
+        self.client.post('/v1/login/', {'email': 'andersonsr@email.com', 'password': 'strongpassword'})
+
         data = [
             {
                 "longitude": 2.1, "latitude": 0.1, "date": "10/02/2021", "time": "10:00:00",

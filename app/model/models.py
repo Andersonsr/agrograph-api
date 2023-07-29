@@ -17,9 +17,6 @@ class UserProfile(StructuredNode):
     name = StringProperty(required=True)
     email = EmailProperty(required=True, unique_index=True)
 
-    lastLogin = DateTimeFormatProperty(format='%d/%m/%Y %H:%M:%S')
-    lastToken = StringProperty()
-
     # vertices
     measurements = RelationshipTo('Measurement', 'Measurements')
 

@@ -7,7 +7,7 @@ in the following paper https://publicaciones.sadio.org.ar/index.php/JAIIO/articl
 
 ## Endpoints
 
-* ### POST sing-in/ 
+* ### POST sign-in/ 
 
   The expected request for this endpoint is displayed bellow. 
 All fields are required to create a new user.

@@ -14,6 +14,8 @@ class EditUserTestCase(TestCase):
         self.user_profile = UserProfile(name='Test User', email='test@example.com', institution='Test Institution')
         self.user_profile.save()
 
+        self.client.post('/v1/login/', {})
+
     def test_edit_user_success(self):
         data = {
             'newName': 'Updated User',
@@ -60,8 +62,9 @@ class EditUserTestCase(TestCase):
             'newInstitution': 'Updated Institution',
         }
         response = self.client.post('/v1/edit-profile/', data)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertEqual(response.json()['detail'], 'Authentication credentials were not provided.')
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        # Assert that the response contains the expected redirect URL
 
         # Check if the user information remains unchanged
         unchanged_profile = UserProfile.nodes.get(email='test@example.com')

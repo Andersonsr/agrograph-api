@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework.authtoken',
     'django.contrib.admindocs',
-    # 'django_nose'
+    # 'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +79,7 @@ ROOT_URLCONF = 'agrograph.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../app/templates'), ],
+        'DIRS': [os.path.join(BASE_DIR, '/app/templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
