@@ -7,6 +7,7 @@ from app.model.models import UserProfile
 from app.validation.read import validate
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from django.contrib.auth.decorators import login_required
+from app.validation.read import validate
 
 
 @api_view(('GET', ))
@@ -19,6 +20,10 @@ def read(request):
     valid, response = validate(request)
     if not valid:
         return response
+
+    valid, message = validate(request)
+    if not valid:
+        return message
 
     data = request.GET
 

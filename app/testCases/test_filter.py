@@ -4,22 +4,26 @@ from app.model.models import UserProfile
 from django.test import Client
 from ..utils.filters import filterByDate, filterByLocation
 from neomodel import db, clear_neo4j_database
+from django.contrib.auth.models import User
 
 
 class test_filter(TestCase):
 
     def setUp(self) -> None:
+        # clear database
         clear_neo4j_database(db)
-        self.client = Client()
-        self.client.post('/v1/sing-in/', {
-            'email': 'andersonsr@email.com',
-            'password': 'strongpassword',
-            'password2': 'strongpassword',
-            'name': 'anderson rosa',
-            'institution': 'unipampa'
-        })
 
-        self.client.post('/v1/login/', {'email': 'andersonsr@email.com', 'password': 'strongpassword'})
+        # create user and profile
+        user = User.objects.create_user(username='test@example.com', password='testpassword')
+        user_profile = UserProfile(name='Test User', email='test@example.com', institution='Test Institution')
+        user_profile.save()
+
+        response = self.client.post('/v1/login/', data={'email': 'test@example.com', 'password': 'testpassword'})
+        token = response.json()['token']
+
+        self.auth_headers = {
+            'HTTP_AUTHORIZATION': 'Token ' + token,
+        }
 
         data = [
             {
@@ -43,7 +47,7 @@ class test_filter(TestCase):
 
     def testLocationFilter(self):
         """unit test for utils.filters.filterByLocation function"""
-        user = UserProfile.nodes.first(email='andersonsr@email.com', name='anderson rosa')
+        user = UserProfile.nodes.first(email='test@example.com')
         measurements = user.measurements.all()
 
         filterLT3 = [{"latitude": 1, "longitude": 2}, {"latitude": 1, "longitude": 2}]
@@ -67,7 +71,7 @@ class test_filter(TestCase):
     def testDateFilter(self):
         """unit test for utils.filters.filterByDate function"""
 
-        user = UserProfile.nodes.first(email='andersonsr@email.com', name='anderson rosa')
+        user = UserProfile.nodes.first(email='test@example.com')
         measurements = user.measurements.all()
 
         self.assertEquals(len(filterByDate(measurements, "10/02/2021", None)), 4)

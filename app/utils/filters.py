@@ -66,15 +66,17 @@ def applyALlFilters(uid, polygon, dateMin, dateMax, valueMin, valueMax, timeMin,
 
     for measurement in measurements:
         variables = measurement.variables.all()
-        info = {
-            "longitude": measurement.location.all()[0].longitude,
-            "latitude": measurement.location.all()[0].latitude,
-            "date": measurement.date.all()[0].date.strftime(DATE_FORMAT)
-        }
-
         for variable in variables:
             if (varNames is None or variable.name in varNames) and checkValue(variable.value, valueMin, valueMax):
                 if category is None or variable.category == category:
+                    info = {
+                        "longitude": measurement.location.all()[0].longitude,
+                        "latitude": measurement.location.all()[0].latitude,
+                        "date": measurement.date.all()[0].date.strftime(DATE_FORMAT),
+                    }
+                    if measurement.time is not None:
+                        info["time"] = measurement.time.strftime(TIME_FORMAT)
+
                     info['variable'] = variable.name
                     info['category'] = variable.category
                     info['value'] = variable.value

@@ -50,10 +50,7 @@ class testDataManagement(TestCase):
 
         self.assertEquals(response.status_code, status.HTTP_200_OK)
         responseData = response.json()["data"]
-        for data in responseData:
-            print(data)
-
-        self.assertJSONEqual(json.dumps(responseData), json.dumps(data))
+        self.assertCountEqual(responseData, data)
 
 
 
