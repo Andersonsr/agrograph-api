@@ -23,6 +23,7 @@ load_dotenv()
 host = os.environ.get('NEO4J_HOST')
 password = os.environ.get('NEO4J_PASSWORD')
 user = os.environ.get('NEO4J_USER')
+severSecret = os.environ.get('SERVER_SECRET')
 
 config.DATABASE_URL = 'bolt://' + user + ':' + password + '@' + host + ':7687'
 
@@ -30,13 +31,16 @@ config.DATABASE_URL = 'bolt://' + user + ':' + password + '@' + host + ':7687'
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-lvuw5q5yawc@y@9q-!83hzy(%@rekdf2*bhe0c_loh^ak9y3u_'
+if severSecret == '' or severSecret is None:
+    SECRET_KEY = 'django-insecure-lvuw5q5yawc@y@9q-!83hzy(%@rekdf2*bhe0c_loh^ak9y3u_'
+else:
+    SECRET_KEY = severSecret
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = ['projetos-ufp.si.tec.br', 'localhost', 'agrograph-php-1', '127.0.0.1']
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:80",
     "http://localhost",
@@ -44,7 +48,15 @@ CORS_ALLOWED_ORIGINS = [
     "http://agrograph-php-1",
     "http://127.0.0.1:80"
 ]
-
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    'HTTP_AUTHORIZATION',
+)
 # Application definition
 
 INSTALLED_APPS = [
